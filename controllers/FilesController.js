@@ -3,6 +3,8 @@
 import dbClient from '../utils/db.js';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
+import path from 'path';
+import mimeTypes from 'mime-types';
 
 export default class FilesController {
   static async postUpload(req, res) {
@@ -134,6 +136,46 @@ export default class FilesController {
       await dbClient.files.updateOne({ _id: id }, { $set: { isPublic: false } });
 
       res.status(200).json(file);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+}
+/* import fs from 'fs';
+* import path from 'path';
+* import mimeTypes from 'mime-types';
+* import dbClient from '../utils/db.js';
+*/
+
+export default class FilesController {
+  static async getFile(req, res) {
+    try {
+      const { id } = req.params;
+      const userId = req.user._id.toString();
+
+      const file = await dbClient.files.findOne({ _id: id });
+      if (!file) {
+        return res.status(404).json({ error: 'Not found' });
+      }
+
+      if (!file.isPublic && (!req.user || file.userId !== userId)) {
+        return res.status(404).json({ error: 'Not found' });
+      }
+
+      if (file.type === 'folder') {
+        return res.status(400).json({ error: "A folder doesn't have content" });
+      }
+
+      const filePath = path.join(process.env.FOLDER_PATH || '/tmp/files_manager', file.localPath);
+      if (!fs.existsSync(filePath)) {
+        return res.status(404).json({ error: 'Not found' });
+      }
+
+      const mimeType = mimeTypes.lookup(file.name);
+      res.setHeader('Content-Type', mimeType);
+      const fileStream = fs.createReadStream(filePath);
+      fileStream.pipe(res);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
