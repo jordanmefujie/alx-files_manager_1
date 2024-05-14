@@ -1,9 +1,11 @@
 /* eslint-disable import/no-named-as-default */
 import sha1 from 'sha1';
 import dbClient from '../utils/db.js';
+import redisClient from '../utils/redis.js';
 
 export default class UsersController {
   static async postNew(req, res) {
+	
     try {
       const { email, password } = req.body;
 
