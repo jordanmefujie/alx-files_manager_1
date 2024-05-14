@@ -61,3 +61,41 @@ export default class FilesController {
     }
   }
 }
+/* import dbClient from '../utils/db.js'; */
+
+export default class FilesController {
+  static async getShow(req, res) {
+    try {
+      const { id } = req.params;
+      const userId = req.user._id.toString();
+
+      const file = await dbClient.files.findOne({ _id: id, userId });
+      if (!file) {
+        return res.status(404).json({ error: 'Not found' });
+      }
+
+      res.status(200).json(file);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
+  static async getIndex(req, res) {
+    try {
+      const { parentId = '0', page = 0 } = req.query;
+      const userId = req.user._id.toString();
+
+      const files = await dbClient.files
+        .find({ userId, parentId })
+        .skip(page * 20)
+        .limit(20)
+        .toArray();
+
+      res.status(200).json(files);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+}
