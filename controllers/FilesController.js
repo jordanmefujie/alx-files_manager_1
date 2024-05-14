@@ -99,3 +99,44 @@ export default class FilesController {
     }
   }
 }
+/* import dbClient from '../utils/db.js'; */
+
+export default class FilesController {
+  static async putPublish(req, res) {
+    try {
+      const { id } = req.params;
+      const userId = req.user._id.toString();
+
+      const file = await dbClient.files.findOne({ _id: id, userId });
+      if (!file) {
+        return res.status(404).json({ error: 'Not found' });
+      }
+
+      await dbClient.files.updateOne({ _id: id }, { $set: { isPublic: true } });
+
+      res.status(200).json(file);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
+  static async putUnpublish(req, res) {
+    try {
+      const { id } = req.params;
+      const userId = req.user._id.toString();
+
+      const file = await dbClient.files.findOne({ _id: id, userId });
+      if (!file) {
+        return res.status(404).json({ error: 'Not found' });
+      }
+
+      await dbClient.files.updateOne({ _id: id }, { $set: { isPublic: false } });
+
+      res.status(200).json(file);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+}
