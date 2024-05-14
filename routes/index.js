@@ -17,5 +17,7 @@ router.get('/connect', AuthController.getConnect);
 router.get('/disconnect', AuthController.getDisconnect);
 router.get('/users/me', UsersController.getMe);
 router.post('/files', AuthController.isAuthenticated, FilesController.postUpload);
+router.get('/files/:id', AuthController.isAuthenticated, FilesController.getShow);
+router.get('/files', AuthController.isAuthenticated, FilesController.getIndex);
 
 export default router;
