@@ -3,7 +3,7 @@ const app = require('../app');
 const redisClient = require('../redisClient'); 
 const dbClient = require('../dbClient'); 
 
-// Mocking RedisClient and DBClient
+// Mocking RedisClient and DBClient updates made on 11/8/24
 jest.mock('../redisClient');
 jest.mock('../dbClient');
 
