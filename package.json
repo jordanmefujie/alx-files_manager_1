@@ -12,6 +12,7 @@
     "test": "./node_modules/.bin/mocha --require @babel/register --exit"
   },
   "author": "",
+  "authors": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.2",

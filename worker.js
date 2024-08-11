@@ -1,3 +1,4 @@
+// worker file updated
 import DBClient from './utils/db';
 
 const Bull = require('bull');

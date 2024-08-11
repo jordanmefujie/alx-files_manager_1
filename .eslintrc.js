@@ -1,3 +1,4 @@
+// .es
 module.exports = {
     env: {
       browser: false,
