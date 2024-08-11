@@ -1,4 +1,4 @@
-// utils/db.js
+// utils/db.js updated
 
 const { MongoClient } = require('mongodb');
 
