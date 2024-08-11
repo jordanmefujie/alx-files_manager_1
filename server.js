@@ -1,4 +1,4 @@
-// server.js
+// server.js updated
 
 const express = require('express');
 const routes = require('./routes/index'); // Load all routes from routes/index.js
