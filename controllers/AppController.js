@@ -1,4 +1,4 @@
-// controllers/AppController.js
+// controllers/AppController.js file
 
 const redisClient = require('../utils/redis'); // Load RedisClient
 const dbClient = require('../utils/db'); // Load DBClient
